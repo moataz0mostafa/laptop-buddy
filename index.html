@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptop Buddy - Find Your Perfect Laptop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --background: #000003;
+            --background-deep: #000000;
+            --surface: #020408;
+            --surface-light: #050a12;
+            --navy-dark: #030610;
+            --navy-medium: #060c18;
+            --navy-light: #0a1220;
+            --accent-primary: #1a2a4a;
+            --accent-secondary: #243656;
+            --accent-glow: rgba(30, 60, 120, 0.4);
+            --text-primary: #4a4a4a;
+            --text-secondary: #5a5a5a;
+            --text-heading: #3a3a3a;
+            --text-light: #6a6a6a;
+            --border-color: rgba(30, 60, 120, 0.2);
+            --glow-blue: rgba(20, 40, 80, 0.5);
+        }
+
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            letter-spacing: 0.01em;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-8px) rotate(1deg); }
+            75% { transform: translateY(-4px) rotate(-1deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px var(--glow-blue), inset 0 0 20px rgba(20, 40, 80, 0.1); }
+            50% { box-shadow: 0 0 40px var(--glow-blue), 0 0 60px rgba(20, 40, 80, 0.2), inset 0 0 30px rgba(20, 40, 80, 0.15); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.02); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes rotateIn {
+            from { opacity: 0; transform: rotate(-5deg) scale(0.95); }
+            to { opacity: 1; transform: rotate(0deg) scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { border-color: rgba(30, 60, 120, 0.2); }
+            50% { border-color: rgba(30, 60, 120, 0.5); }
+        }
+
+        @keyframes textReveal {
+            from { clip-path: inset(0 100% 0 0); }
+            to { clip-path: inset(0 0 0 0); }
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .animate-in {
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-fade {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .animate-scale {
+            animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 3, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.2rem 2rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slideDown 0.8s ease forwards;
+        }
+
+        nav.scrolled {
+            padding: 0.8rem 2rem;
+            background: rgba(0, 0, 0, 0.98);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Sora', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            cursor: pointer;
+            letter-spacing: -0.02em;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .logo:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 30px var(--glow-blue);
+        }
+
+        .currency-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(20, 40, 80, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .currency-selector:hover {
+            border-color: rgba(30, 60, 120, 0.4);
+        }
+
+        .currency-selector select {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            padding: 0.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .currency-selector select:focus {
+            outline: none;
+            color: var(--text-primary);
+        }
+
+        .currency-selector select option {
+            background: var(--navy-dark);
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.4s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: var(--text-primary);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(180deg, var(--background) 0%, var(--background-deep) 50%, var(--navy-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(20, 40, 80, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(15, 30, 60, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(10, 20, 40, 0.04) 0%, transparent 70%);
+            animation: pulse 12s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(20, 40, 80, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        .hero h1 span {
+            color: var(--text-primary);
+            font-style: italic;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.6s;
+            opacity: 0;
+        }
+
+        .btn {
+            padding: 1.1rem 2.2rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            color: var(--text-light);
+            border: 1px solid rgba(30, 60, 120, 0.3);
+            box-shadow: 0 4px 20px var(--glow-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 40px var(--glow-blue);
+            border-color: rgba(30, 60, 120, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(30, 60, 120, 0.1);
+            border-color: rgba(30, 60, 120, 0.4);
+            transform: translateY(-4px);
+            color: var(--text-primary);
+        }
+
+        /* ===== SECTION STYLES ===== */
+        section {
+            padding: 7rem 2rem;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(2.2rem, 4vw, 3rem);
+            margin-bottom: 1.2rem;
+            color: var(--text-heading);
+            letter-spacing: 0.03em;
+            font-weight: 600;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== LAPTOP FINDER ===== */
+        #finder {
+            background: linear-gradient(180deg, var(--navy-dark) 0%, var(--surface) 100%);
+        }
+
+        .finder-container {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-medium) 100%);
+            border-radius: 8px;
+            padding: 3.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: glow 6s ease-in-out infinite;
+        }
+
+        .finder-steps {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-bottom: 3.5rem;
+            flex-wrap: wrap;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            background: rgba(20, 40, 80, 0.2);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .step-indicator.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-light);
+            border-color: rgba(30, 60, 120, 0.5);
+            box-shadow: 0 4px 20px var(--glow-blue);
+            transform: scale(1.05);
+        }
+
+        .step-indicator.completed {
+            background: rgba(40, 80, 60, 0.3);
+            color: #5a8a6a;
+            border-color: rgba(40, 80, 60, 0.3);
+        }
+
+        .step-number {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .finder-question {
+            display: none;
+            animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .finder-question.active {
+            display: block;
+        }
+
+        .finder-question h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.6rem;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            color: var(--text-heading);
+            font-weight: 500;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .option-card {
+            background: rgba(5, 10, 20, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(30, 60, 120, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .option-card:hover {
+            border-color: rgba(30, 60, 120, 0.5);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px var(--glow-blue);
+        }
+
+        .option-card:hover::before {
+            opacity: 1;
+        }
+
+        .option-card.selected {
+            border-color: rgba(30, 60, 120, 0.6);
+            background: rgba(20, 40, 80, 0.3);
+            box-shadow: 0 0 40px var(--glow-blue);
+            transform: scale(1.02);
+        }
+
+        .option-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            transition: transform 0.4s ease;
+        }
+
+        .option-card:hover .option-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .option-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .option-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .finder-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+
+        .finder-result {
+            display: none;
+            text-align: center;
+            animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .finder-result.active {
+            display: block;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, rgba(20, 40, 80, 0.2) 0%, rgba(30, 60, 120, 0.15) 100%);
+            border: 1px solid rgba(30, 60, 120, 0.3);
+            border-radius: 8px;
+            padding: 3.5rem;
+            max-width: 750px;
+            margin: 0 auto;
+            animation: glow 4s ease-in-out infinite;
+        }
+
+        .result-card h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 2.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+
+        .result-card .recommendation-type {
+            font-size: 1.4rem;
+            color: #5a8a6a;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .result-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin: 2.5rem 0;
+        }
+
+        .spec-badge {
+            background: rgba(5, 10, 20, 0.6);
+            padding: 1.2rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s ease;
+        }
+
+        .spec-badge:hover {
+            transform: translateY(-4px);
+            border-color: rgba(30, 60, 120, 0.4);
+        }
+
+        .spec-badge span {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .spec-badge strong {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .result-reasoning {
+            text-align: left;
+            background: rgba(0, 0, 3, 0.5);
+            padding: 2rem;
+            border-radius: 6px;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .result-reasoning h4 {
+            margin-bottom: 1.2rem;
+            color: var(--text-heading);
+            font-family: 'Sora', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .result-reasoning ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-reasoning li {
+            padding: 0.6rem 0;
+            padding-left: 1.8rem;
+            position: relative;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .result-reasoning li:hover {
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+
+        .result-reasoning li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--text-light);
+            font-weight: bold;
+        }
+
+        /* ===== SPECS SECTION ===== */
+        #specs {
+            background: linear-gradient(180deg, var(--surface) 0%, var(--background) 100%);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .spec-card {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
+            border-radius: 8px;
+            padding: 2.2rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spec-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(30, 60, 120, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .spec-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(30, 60, 120, 0.4);
+            box-shadow: 0 20px 50px var(--glow-blue);
+        }
+
+        .spec-card:hover::after {
+            opacity: 1;
+        }
+
+        .spec-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .spec-card-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px var(--glow-blue);
+        }
+
+        .spec-card:hover .spec-card-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .spec-card h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.4rem;
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+
+        .spec-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .spec-card .highlight {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .system-diagram {
+            margin-top: 5rem;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
+            border-radius: 8px;
+            padding: 3.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .system-diagram h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.6rem;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+
+        .diagram-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+
+        .diagram-component {
+            background: rgba(20, 40, 80, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .diagram-component:hover {
+            border-color: rgba(30, 60, 120, 0.5);
+            transform: scale(1.08) translateY(-5px);
+            box-shadow: 0 10px 30px var(--glow-blue);
+        }
+
+        .diagram-component strong {
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .diagram-component p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .diagram-arrow {
+            font-size: 1.8rem;
+            color: var(--text-light);
+            animation: pulse 3s infinite;
+        }
+
+        /* ===== COMPARE SECTION ===== */
+        #compare {
+            background: linear-gradient(180deg, var(--background) 0%, var(--navy-dark) 100%);
+        }
+
+        .compare-selector {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+            flex-wrap: wrap;
+        }
+
+        .laptop-select-card {
+            background: rgba(5, 10, 20, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.8rem;
+            min-width: 280px;
+            transition: all 0.4s ease;
+        }
+
+        .laptop-select-card:hover {
+            border-color: rgba(30, 60, 120, 0.4);
+            transform: translateY(-4px);
+        }
+
+        .laptop-select-card label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .laptop-select-card select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--background);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Sora', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .laptop-select-card select:focus {
+            outline: none;
+            border-color: rgba(30, 60, 120, 0.5);
+            box-shadow: 0 0 15px var(--glow-blue);
+        }
+
+        .compare-table-container {
+            overflow-x: auto;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(5, 10, 20, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .compare-table th,
+        .compare-table td {
+            padding: 1.4rem 1.8rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .compare-table th {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-medium) 100%);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            color: var(--text-heading);
+            font-size: 1.1rem;
+        }
+
+        .compare-table tr:hover td {
+            background: rgba(20, 40, 80, 0.1);
+        }
+
+        .compare-table .spec-name {
+            text-align: left;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .compare-table td strong {
+            color: var(--text-primary);
+        }
+
+        .compare-bar {
+            height: 6px;
+            background: rgba(30, 60, 120, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.6rem;
+        }
+
+        .compare-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .bar-excellent { background: linear-gradient(90deg, var(--accent-primary), #3a6a4a); }
+        .bar-good { background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); }
+        .bar-moderate { background: linear-gradient(90deg, #4a4a3a, #5a5a4a); }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--background-deep);
+            padding: 5rem 2rem 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3.5rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .footer-section h4 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-secondary);
+            line-height: 1.9;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .currency-selector {
+            display: none;
+        }
+
+        @media (min-width: 769px) {
+            .currency-selector {
+                display: flex;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(0, 0, 0, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                border-bottom: 1px solid var(--border-color);
+                animation: slideDown 0.4s ease;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+
+            .finder-container {
+                padding: 2rem;
+            }
+
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .compare-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .laptop-select-card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 4rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="scrollToSection('hero')">Laptop Buddy</div>
+            <div style="display: flex; align-items: center; gap: 2rem;">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#hero" onclick="toggleMenu()">Home</a></li>
+                    <li><a href="#finder" onclick="toggleMenu()">Find My Laptop</a></li>
+                    <li><a href="#specs" onclick="toggleMenu()">Learn Specs</a></li>
+                    <li><a href="#compare" onclick="toggleMenu()">Compare</a></li>
+                </ul>
+                <div class="currency-selector">
+                    <span style="color: var(--text-light); font-size: 0.85rem;">💱</span>
+                    <select id="currencySelect" onchange="changeCurrency()">
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                        <option value="JPY">JPY (¥)</option>
+                        <option value="AUD">AUD (A$)</option>
+                        <option value="CAD">CAD (C$)</option>
+                        <option value="INR">INR (₹)</option>
+                        <option value="CNY">CNY (¥)</option>
+                        <option value="AED">AED (د.إ)</option>
+                        <option value="SAR">SAR (﷼)</option>
+                    </select>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">&#9776;</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>The right laptop isn't the most expensive one - it's the one that <span>fits your needs.</span></h1>
+            <p>Stop wasting time comparing endless specs. Our intelligent system analyzes your usage patterns, budget, and priorities to recommend the perfect laptop for you.</p>
+            <div class="cta-buttons">
+                <a href="#finder" class="btn btn-primary">
+                    <span>&#128269;</span> Find My Laptop
+                </a>
+                <a href="#specs" class="btn btn-secondary">
+                    <span>&#128218;</span> Learn About Specs
+                </a>
+                <a href="#compare" class="btn btn-secondary">
+                    <span>&#9878;</span> Compare Laptops
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Laptop Finder Section -->
+    <section id="finder">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Find Your Perfect Laptop</h2>
+                <p>Answer a few questions and we'll recommend the ideal laptop configuration for your needs.</p>
+            </div>
+
+            <div class="finder-container">
+                <!-- Progress Steps -->
+                <div class="finder-steps">
+                    <div class="step-indicator active" id="step1-indicator">
+                        <span class="step-number">1</span>
+                        <span>Purpose</span>
+                    </div>
+                    <div class="step-indicator" id="step2-indicator">
+                        <span class="step-number">2</span>
+                        <span>Budget</span>
+                    </div>
+                    <div class="step-indicator" id="step3-indicator">
+                        <span class="step-number">3</span>
+                        <span>Portability</span>
+                    </div>
+                    <div class="step-indicator" id="step4-indicator">
+                        <span class="step-number">4</span>
+                        <span>Battery</span>
+                    </div>
+                </div>
+
+                <!-- Step 1: Purpose -->
+                <div class="finder-question active" id="step1">
+                    <h3>What will you primarily use your laptop for?</h3>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="selectOption('purpose', 'gaming')">
+                            <div class="option-icon">&#127918;</div>
+                            <h4>Gaming</h4>
+                            <p>High-performance games, esports, AAA titles</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('purpose', 'school')">
+                            <div class="option-icon">&#128218;</div>
+                            <h4>School/Study</h4>
+                            <p>Research, documents, online classes</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('purpose', 'editing')">
+                            <div class="option-icon">&#127916;</div>
+                            <h4>Video/Photo Editing</h4>
+                            <p>Creative work, rendering, design</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('purpose', 'programming')">
+                            <div class="option-icon">&#128187;</div>
+                            <h4>Programming</h4>
+                            <p>Software development, coding, VMs</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('purpose', 'business')">
+                            <div class="option-icon">&#128188;</div>
+                            <h4>Business</h4>
+                            <p>Office work, presentations, meetings</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('purpose', 'general')">
+                            <div class="option-icon">&#127760;</div>
+                            <h4>General Use</h4>
+                            <p>Browsing, streaming, everyday tasks</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Budget -->
+                <div class="finder-question" id="step2">
+                    <h3>What's your budget range?</h3>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="selectOption('budget', 'low')">
+                            <div class="option-icon">&#128176;</div>
+                            <h4>Budget-Friendly</h4>
+                            <p>Under $600 - Essential features</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('budget', 'medium')">
+                            <div class="option-icon">&#128177;</div>
+                            <h4>Mid-Range</h4>
+                            <p>$600 - $1200 - Balanced performance</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('budget', 'high')">
+                            <div class="option-icon">&#128178;</div>
+                            <h4>Premium</h4>
+                            <p>$1200+ - Top-tier specs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Portability -->
+                <div class="finder-question" id="step3">
+                    <h3>How important is portability to you?</h3>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="selectOption('portability', 'high')">
+                            <div class="option-icon">&#9992;</div>
+                            <h4>Very Important</h4>
+                            <p>Always on the go, need ultralight</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('portability', 'medium')">
+                            <div class="option-icon">&#128188;</div>
+                            <h4>Somewhat Important</h4>
+                            <p>Move occasionally, balance is key</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('portability', 'low')">
+                            <div class="option-icon">&#127968;</div>
+                            <h4>Not Important</h4>
+                            <p>Stays mostly in one place</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Battery -->
+                <div class="finder-question" id="step4">
+                    <h3>How important is battery life?</h3>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="selectOption('battery', 'high')">
+                            <div class="option-icon">&#128267;</div>
+                            <h4>Critical</h4>
+                            <p>Need all-day battery, rarely near outlets</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('battery', 'medium')">
+                            <div class="option-icon">&#128268;</div>
+                            <h4>Moderate</h4>
+                            <p>Few hours unplugged is fine</p>
+                        </div>
+                        <div class="option-card" onclick="selectOption('battery', 'low')">
+                            <div class="option-icon">&#128280;</div>
+                            <h4>Not Important</h4>
+                            <p>Always near a power source</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="finder-nav" id="finderNav">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevStep()" style="display: none;">Back</button>
+                </div>
+
+                <!-- Result -->
+                <div class="finder-result" id="finderResult">
+                    <div class="result-card">
+                        <h3>Your Perfect Match</h3>
+                        <div class="recommendation-type" id="recommendationType"></div>
+                        <div class="result-specs" id="resultSpecs"></div>
+                        <div class="result-reasoning">
+                            <h4>Why this recommendation?</h4>
+                            <ul id="reasoningList"></ul>
+                        </div>
+                        <button class="btn btn-primary" onclick="resetFinder()" style="margin-top: 2rem;">
+                            &#128260; Start Over
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specs Explained Section -->
+    <section id="specs">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Understanding Laptop Specs</h2>
+                <p>Learn what each component does and how they work together to power your laptop.</p>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <div class="spec-card-header">
+                        <div class="spec-card-icon">&#128187;</div>
+                        <h3>CPU (Processor)</h3>
+                    </div>
+                    <p>The <span class="highlight">brain of your laptop</span>. It handles all calculations and instructions. More cores mean better multitasking. Higher clock speeds (GHz) mean faster single-task performance. Intel Core i5/i7 or AMD Ryzen 5/7 are solid choices for most users.</p>
+                </div>
+
+                <div class="spec-card">
+                    <div class="spec-card-header">
+                        <div class="spec-card-icon">&#127912;</div>
+                        <h3>GPU (Graphics Card)</h3>
+                    </div>
+                    <p>Handles <span class="highlight">visual processing</span> - gaming, video editing, and 3D rendering. Integrated GPUs (built into CPU) work for basic tasks. Dedicated GPUs (NVIDIA RTX, AMD Radeon) are essential for gaming and creative work.</p>
+                </div>
+
+                <div class="spec-card">
+                    <div class="spec-card-header">
+                        <div class="spec-card-icon">&#128190;</div>
+                        <h3>RAM (Memory)</h3>
+                    </div>
+                    <p>Your laptop's <span class="highlight">short-term memory</span>. More RAM = more apps running smoothly at once. 8GB is minimum for modern use, 16GB is ideal for multitasking, 32GB+ for professional workloads.</p>
+                </div>
+
+                <div class="spec-card">
+                    <div class="spec-card-header">
+                        <div class="spec-card-icon">&#128451;</div>
+                        <h3>Storage (SSD/HDD)</h3>
+                    </div>
+                    <p><span class="highlight">Long-term storage</span> for files, apps, and OS. SSDs are much faster than HDDs - always choose SSD. NVMe SSDs are even faster than SATA SSDs. 256GB minimum, 512GB+ recommended.</p>
+                </div>
+
+                <div class="spec-card">
+                    <div class="spec-card-header">
+                        <div class="spec-card-icon">&#128250;</div>
+                        <h3>Display</h3>
+                    </div>
+                    <p><span class="highlight">Your visual interface</span>. Resolution (1080p, 1440p, 4K), panel type (IPS for colors, OLED for contrast), and refresh rate (60Hz standard, 120Hz+ for gaming) all matter. Higher refresh rates make motion smoother.</p>
+                </div>
+
+                <div class="spec-card">
+                    <div class="spec-card-header">
+                        <div class="spec-card-icon">&#128267;</div>
+                        <h3>Battery</h3>
+                    </div>
+                    <p>Measured in <span class="highlight">Watt-hours (Wh)</span>. Larger batteries last longer but add weight. Actual battery life depends on usage, screen brightness, and power settings. Look for 50Wh+ for decent portable use.</p>
+                </div>
+
+                <div class="spec-card">
+                    <div class="spec-card-header">
+                        <div class="spec-card-icon">&#10052;</div>
+                        <h3>Cooling System</h3>
+                    </div>
+                    <p>Keeps components from <span class="highlight">overheating</span>. Better cooling = sustained performance. Gaming laptops have aggressive cooling (louder fans). Ultrabooks prioritize quiet operation over peak performance.</p>
+                </div>
+
+                <div class="spec-card">
+                    <div class="spec-card-header">
+                        <div class="spec-card-icon">&#128279;</div>
+                        <h3>Ports & Connectivity</h3>
+                    </div>
+                    <p><span class="highlight">Connect your devices</span>. USB-A (legacy), USB-C/Thunderbolt (modern, fast), HDMI (displays), SD card (cameras). More ports = more flexibility. Check what you need before buying.</p>
+                </div>
+            </div>
+
+            <div class="system-diagram">
+                <h3>How Components Work Together</h3>
+                <div class="diagram-visual">
+                    <div class="diagram-component">
+                        <strong>CPU</strong>
+                        <p>Processes</p>
+                    </div>
+                    <div class="diagram-arrow">&#8644;</div>
+                    <div class="diagram-component">
+                        <strong>RAM</strong>
+                        <p>Active Data</p>
+                    </div>
+                    <div class="diagram-arrow">&#8644;</div>
+                    <div class="diagram-component">
+                        <strong>Storage</strong>
+                        <p>Files & Apps</p>
+                    </div>
+                    <div class="diagram-arrow">&#8595;</div>
+                    <div class="diagram-component">
+                        <strong>GPU</strong>
+                        <p>Renders</p>
+                    </div>
+                    <div class="diagram-arrow">&#8594;</div>
+                    <div class="diagram-component">
+                        <strong>Display</strong>
+                        <p>Shows Output</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">
+                    The CPU requests data from storage, works with it in RAM, sends graphics tasks to the GPU, which outputs to your display. Fast components in this chain = smooth performance.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compare Section -->
+    <section id="compare">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Compare Laptops</h2>
+                <p>Select laptop types to see how their specs and performance compare side by side.</p>
+            </div>
+
+            <div class="compare-selector">
+                <div class="laptop-select-card">
+                    <label for="laptop1">Laptop 1</label>
+                    <select id="laptop1" onchange="updateComparison()">
+                        <option value="">Select a laptop type...</option>
+                        <option value="ultrabook">Ultrabook (Portable)</option>
+                        <option value="gaming">Gaming Laptop</option>
+                        <option value="workstation">Workstation</option>
+                        <option value="budget">Budget Laptop</option>
+                        <option value="business">Business Laptop</option>
+                    </select>
+                </div>
+                <div class="laptop-select-card">
+                    <label for="laptop2">Laptop 2</label>
+                    <select id="laptop2" onchange="updateComparison()">
+                        <option value="">Select a laptop type...</option>
+                        <option value="ultrabook">Ultrabook (Portable)</option>
+                        <option value="gaming">Gaming Laptop</option>
+                        <option value="workstation">Workstation</option>
+                        <option value="budget">Budget Laptop</option>
+                        <option value="business">Business Laptop</option>
+                    </select>
+                </div>
+                <div class="laptop-select-card">
+                    <label for="laptop3">Laptop 3 (Optional)</label>
+                    <select id="laptop3" onchange="updateComparison()">
+                        <option value="">Select a laptop type...</option>
+                        <option value="ultrabook">Ultrabook (Portable)</option>
+                        <option value="gaming">Gaming Laptop</option>
+                        <option value="workstation">Workstation</option>
+                        <option value="budget">Budget Laptop</option>
+                        <option value="business">Business Laptop</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="compare-table-container">
+                <table class="compare-table" id="compareTable">
+                    <thead>
+                        <tr>
+                            <th>Specification</th>
+                            <th id="header1">Laptop 1</th>
+                            <th id="header2">Laptop 2</th>
+                            <th id="header3">Laptop 3</th>
+                        </tr>
+                    </thead>
+                    <tbody id="compareBody">
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 3rem;">
+                                Select laptops above to see comparison
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>About This Project</h4>
+                    <p>Laptop Buddy is an interactive tool designed to simplify the laptop buying process. Instead of getting lost in spec sheets, users can find their perfect match based on real needs.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Learning Goals</h4>
+                    <p>This project demonstrates modern web development techniques including responsive design, interactive UI components, CSS animations, and user-centered design principles.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#finder">Laptop Finder</a>
+                    <a href="#specs">Spec Guide</a>
+                    <a href="#compare">Compare Tool</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Have questions or suggestions?</p>
+                    <a href="mailto:contact@laptopbuddy.com">contact@laptopbuddy.com</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Laptop Buddy. Built with passion for helping people make better tech choices.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== CURRENCY SYSTEM =====
+        let currentCurrency = 'USD';
+        const currencyRates = {
+            USD: { symbol: '$', rate: 1 },
+            EUR: { symbol: '€', rate: 0.92 },
+            GBP: { symbol: '£', rate: 0.79 },
+            JPY: { symbol: '¥', rate: 149.50 },
+            AUD: { symbol: 'A$', rate: 1.52 },
+            CAD: { symbol: 'C$', rate: 1.35 },
+            INR: { symbol: '₹', rate: 83.12 },
+            CNY: { symbol: '¥', rate: 7.24 },
+            AED: { symbol: 'د.إ', rate: 3.67 },
+            SAR: { symbol: '﷼', rate: 3.75 }
+        };
+
+        function changeCurrency() {
+            currentCurrency = document.getElementById('currencySelect').value;
+            updateAllPrices();
+        }
+
+        function convertPrice(usdPrice) {
+            const rate = currencyRates[currentCurrency].rate;
+            const symbol = currencyRates[currentCurrency].symbol;
+            const convertedPrice = Math.round(usdPrice * rate);
+            
+            if (currentCurrency === 'JPY' || currentCurrency === 'INR') {
+                return `${symbol}${convertedPrice.toLocaleString()}`;
+            }
+            return `${symbol}${convertedPrice.toLocaleString()}`;
+        }
+
+        function updateAllPrices() {
+            // Update budget options
+            const budgetOptions = document.querySelectorAll('#step2 .option-card p');
+            if (budgetOptions.length >= 3) {
+                budgetOptions[0].textContent = `Under ${convertPrice(600)} - Essential features`;
+                budgetOptions[1].textContent = `${convertPrice(600)} - ${convertPrice(1200)} - Balanced performance`;
+                budgetOptions[2].textContent = `${convertPrice(1200)}+ - Top-tier specs`;
+            }
+
+            // Update comparison table if visible
+            updateComparison();
+        }
+
+        // ===== NAVIGATION =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ===== LAPTOP FINDER =====
+        let currentStep = 1;
+        const totalSteps = 4;
+        const userSelections = {
+            purpose: null,
+            budget: null,
+            portability: null,
+            battery: null
+        };
+
+        function selectOption(category, value) {
+            userSelections[category] = value;
+            
+            // Update UI
+            const stepElement = document.getElementById(`step${currentStep}`);
+            const cards = stepElement.querySelectorAll('.option-card');
+            cards.forEach(card => card.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+
+            // Mark step as completed and move to next
+            setTimeout(() => {
+                if (currentStep < totalSteps) {
+                    document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
+                    document.getElementById(`step${currentStep}-indicator`).classList.add('completed');
+                    currentStep++;
+                    updateFinderUI();
+                } else {
+                    showResult();
+                }
+            }, 400);
+        }
+
+        function updateFinderUI() {
+            // Hide all questions
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`step${i}`).classList.remove('active');
+                if (i < currentStep) {
+                    document.getElementById(`step${i}-indicator`).classList.add('completed');
+                    document.getElementById(`step${i}-indicator`).classList.remove('active');
+                } else if (i === currentStep) {
+                    document.getElementById(`step${i}-indicator`).classList.add('active');
+                    document.getElementById(`step${i}-indicator`).classList.remove('completed');
+                } else {
+                    document.getElementById(`step${i}-indicator`).classList.remove('active', 'completed');
+                }
+            }
+            
+            // Show current question
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').style.display = currentStep > 1 ? 'inline-flex' : 'none';
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateFinderUI();
+            }
+        }
+
+        function showResult() {
+            // Hide questions and show result
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`step${i}`).classList.remove('active');
+                document.getElementById(`step${i}-indicator`).classList.add('completed');
+                document.getElementById(`step${i}-indicator`).classList.remove('active');
+            }
+            document.getElementById('finderNav').style.display = 'none';
+            document.getElementById('finderResult').classList.add('active');
+            
+            // Generate recommendation
+            const recommendation = generateRecommendation();
+            displayRecommendation(recommendation);
+        }
+
+        function generateRecommendation() {
+            const { purpose, budget, portability, battery } = userSelections;
+            
+            const recommendations = {
+                gaming: {
+                    type: 'Gaming Laptop',
+                    specs: {
+                        CPU: 'Intel i7/i9 or AMD Ryzen 7/9',
+                        GPU: 'NVIDIA RTX 4060-4090',
+                        RAM: '16-32GB DDR5',
+                        Storage: '1TB NVMe SSD',
+                        Display: '15.6"-17", 144Hz+, IPS/OLED',
+                        Battery: '80-100Wh'
+                    },
+                    reasons: [
+                        'High-performance GPU for smooth gaming at high settings',
+                        'Fast processor handles game logic and streaming',
+                        'High refresh rate display reduces motion blur',
+                        'Ample RAM for modern game requirements',
+                        'Fast SSD minimizes load times'
+                    ]
+                },
+                school: {
+                    type: 'Student Ultrabook',
+                    specs: {
+                        CPU: 'Intel i5 or AMD Ryzen 5',
+                        GPU: 'Integrated Graphics',
+                        RAM: '8-16GB',
+                        Storage: '256-512GB SSD',
+                        Display: '13-14", 1080p, IPS',
+                        Battery: '50-70Wh'
+                    },
+                    reasons: [
+                        'Lightweight design perfect for carrying to classes',
+                        'Long battery life lasts through lectures',
+                        'Sufficient power for research and documents',
+                        'Affordable pricing fits student budgets',
+                        'Quality display comfortable for reading'
+                    ]
+                },
+                editing: {
+                    type: 'Creator Workstation',
+                    specs: {
+                        CPU: 'Intel i7/i9 or AMD Ryzen 9',
+                        GPU: 'NVIDIA RTX 4070-4090',
+                        RAM: '32-64GB DDR5',
+                        Storage: '1-2TB NVMe SSD',
+                        Display: '15.6-16", 4K, 100% DCI-P3',
+                        Battery: '90-100Wh'
+                    },
+                    reasons: [
+                        'Powerful CPU accelerates rendering and exports',
+                        'Pro-grade GPU enables real-time previews',
+                        'Color-accurate display for precise editing',
+                        'Large RAM handles complex projects',
+                        'Fast storage for large media files'
+                    ]
+                },
+                programming: {
+                    type: 'Developer Laptop',
+                    specs: {
+                        CPU: 'Intel i7 or AMD Ryzen 7',
+                        GPU: 'Integrated or Entry Dedicated',
+                        RAM: '16-32GB',
+                        Storage: '512GB-1TB SSD',
+                        Display: '14-15.6", 1080p+, IPS',
+                        Battery: '60-80Wh'
+                    },
+                    reasons: [
+                        'Strong multi-core CPU for compilation',
+                        'Ample RAM for IDEs, VMs, and containers',
+                        'Good keyboard essential for coding comfort',
+                        'Balanced portability for office and home',
+                        'Fast SSD speeds up project loading'
+                    ]
+                },
+                business: {
+                    type: 'Business Ultrabook',
+                    specs: {
+                        CPU: 'Intel i5/i7 or AMD Ryzen 5/7',
+                        GPU: 'Integrated Graphics',
+                        RAM: '16GB',
+                        Storage: '512GB SSD',
+                        Display: '13-14", 1080p, IPS',
+                        Battery: '50-70Wh'
+                    },
+                    reasons: [
+                        'Professional design suitable for meetings',
+                        'Excellent build quality for durability',
+                        'Strong security features protect data',
+                        'All-day battery for travel',
+                        'Lightweight for frequent mobility'
+                    ]
+                },
+                general: {
+                    type: 'All-Purpose Laptop',
+                    specs: {
+                        CPU: 'Intel i5 or AMD Ryzen 5',
+                        GPU: 'Integrated Graphics',
+                        RAM: '8-16GB',
+                        Storage: '256-512GB SSD',
+                        Display: '15.6", 1080p, IPS',
+                        Battery: '45-60Wh'
+                    },
+                    reasons: [
+                        'Balanced specs handle everyday tasks well',
+                        'Good value for casual use',
+                        'Comfortable screen size for browsing',
+                        'Sufficient storage for typical needs',
+                        'Versatile for various activities'
+                    ]
+                }
+            };
+
+            let rec = { ...recommendations[purpose] };
+            
+            // Adjust based on budget
+            if (budget === 'low') {
+                rec.specs.CPU = rec.specs.CPU.split(' or ')[1] || rec.specs.CPU.split('/')[0];
+                rec.specs.RAM = rec.specs.RAM.split('-')[0] + 'GB';
+                rec.specs.Storage = rec.specs.Storage.split('-')[0];
+                rec.reasons.push('Budget-optimized while maintaining essential features');
+            } else if (budget === 'high') {
+                rec.specs.CPU = rec.specs.CPU.split(' or ')[0];
+                rec.specs.RAM = rec.specs.RAM.split('-')[1] || rec.specs.RAM;
+                rec.specs.Storage = rec.specs.Storage.split('-')[1] || rec.specs.Storage;
+                rec.reasons.push('Premium components for best-in-class performance');
+            }
+
+            // Adjust for portability
+            if (portability === 'high') {
+                rec.specs.Display = rec.specs.Display.replace(/15\.6|16|17/, '13-14');
+                rec.reasons.push('Compact form factor prioritized for maximum portability');
+            }
+
+            // Adjust for battery
+            if (battery === 'high') {
+                rec.reasons.push('Extended battery capacity selected for all-day use');
+            }
+
+            return rec;
+        }
+
+        function displayRecommendation(rec) {
+            document.getElementById('recommendationType').textContent = rec.type;
+            
+            const specsHtml = Object.entries(rec.specs).map(([key, value]) => `
+                <div class="spec-badge">
+                    <span>${key}</span>
+                    <strong>${value}</strong>
+                </div>
+            `).join('');
+            document.getElementById('resultSpecs').innerHTML = specsHtml;
+            
+            const reasonsHtml = rec.reasons.map(r => `<li>${r}</li>`).join('');
+            document.getElementById('reasoningList').innerHTML = reasonsHtml;
+        }
+
+        function resetFinder() {
+            currentStep = 1;
+            userSelections.purpose = null;
+            userSelections.budget = null;
+            userSelections.portability = null;
+            userSelections.battery = null;
+            
+            document.getElementById('finderResult').classList.remove('active');
+            document.getElementById('finderNav').style.display = 'flex';
+            
+            // Reset all cards
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            updateFinderUI();
+        }
+
+        // ===== COMPARISON TOOL =====
+        const laptopDataUSD = {
+            ultrabook: {
+                name: 'Ultrabook',
+                cpu: { value: 70, text: 'Intel i5/i7 U-Series' },
+                gpu: { value: 30, text: 'Integrated' },
+                ram: { value: 60, text: '8-16GB' },
+                storage: { value: 60, text: '256-512GB SSD' },
+                battery: { value: 90, text: '10-12 hours' },
+                weight: { value: 95, text: '1.0-1.4 kg' },
+                priceMin: 800,
+                priceMax: 1500,
+                value: 70
+            },
+            gaming: {
+                name: 'Gaming Laptop',
+                cpu: { value: 95, text: 'Intel i7/i9 H-Series' },
+                gpu: { value: 95, text: 'RTX 4060-4090' },
+                ram: { value: 90, text: '16-32GB' },
+                storage: { value: 85, text: '1TB+ SSD' },
+                battery: { value: 40, text: '3-5 hours' },
+                weight: { value: 30, text: '2.2-3.0 kg' },
+                priceMin: 1200,
+                priceMax: 3000,
+                value: 40
+            },
+            workstation: {
+                name: 'Workstation',
+                cpu: { value: 100, text: 'Intel i9 / Xeon' },
+                gpu: { value: 90, text: 'RTX 4080/Pro GPU' },
+                ram: { value: 100, text: '32-64GB' },
+                storage: { value: 95, text: '1-2TB NVMe' },
+                battery: { value: 50, text: '4-6 hours' },
+                weight: { value: 25, text: '2.5-3.5 kg' },
+                priceMin: 2000,
+                priceMax: 5000,
+                value: 20
+            },
+            budget: {
+                name: 'Budget Laptop',
+                cpu: { value: 45, text: 'Intel i3 / Ryzen 3' },
+                gpu: { value: 20, text: 'Integrated' },
+                ram: { value: 40, text: '4-8GB' },
+                storage: { value: 40, text: '128-256GB SSD' },
+                battery: { value: 60, text: '6-8 hours' },
+                weight: { value: 60, text: '1.6-2.0 kg' },
+                priceMin: 300,
+                priceMax: 600,
+                value: 95
+            },
+            business: {
+                name: 'Business Laptop',
+                cpu: { value: 75, text: 'Intel i5/i7 vPro' },
+                gpu: { value: 35, text: 'Integrated' },
+                ram: { value: 65, text: '16GB' },
+                storage: { value: 70, text: '512GB SSD' },
+                battery: { value: 85, text: '8-10 hours' },
+                weight: { value: 80, text: '1.3-1.6 kg' },
+                priceMin: 1000,
+                priceMax: 1800,
+                value: 55
+            }
+        };
+
+        function getLaptopData() {
+            const data = {};
+            for (const [key, laptop] of Object.entries(laptopDataUSD)) {
+                data[key] = {
+                    ...laptop,
+                    price: {
+                        value: laptop.value,
+                        text: laptop.priceMax ? 
+                            `${convertPrice(laptop.priceMin)}-${convertPrice(laptop.priceMax)}${laptop.priceMax >= 3000 ? '+' : ''}` :
+                            convertPrice(laptop.priceMin)
+                    }
+                };
+            }
+            return data;
+        }
+
+        const specLabels = {
+            cpu: 'CPU Performance',
+            gpu: 'GPU Performance',
+            ram: 'RAM',
+            storage: 'Storage',
+            battery: 'Battery Life',
+            weight: 'Portability',
+            price: 'Value for Money'
+        };
+
+        function updateComparison() {
+            const laptop1 = document.getElementById('laptop1').value;
+            const laptop2 = document.getElementById('laptop2').value;
+            const laptop3 = document.getElementById('laptop3').value;
+
+            const laptopData = getLaptopData();
+
+            // Update headers
+            document.getElementById('header1').textContent = laptop1 ? laptopData[laptop1].name : 'Laptop 1';
+            document.getElementById('header2').textContent = laptop2 ? laptopData[laptop2].name : 'Laptop 2';
+            document.getElementById('header3').textContent = laptop3 ? laptopData[laptop3].name : 'Laptop 3';
+
+            if (!laptop1 && !laptop2) {
+                document.getElementById('compareBody').innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 3rem;">
+                            Select at least two laptops to see comparison
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            for (const [spec, label] of Object.entries(specLabels)) {
+                html += `<tr>
+                    <td class="spec-name">${label}</td>
+                    ${generateSpecCell(laptop1, spec, laptopData)}
+                    ${generateSpecCell(laptop2, spec, laptopData)}
+                    ${generateSpecCell(laptop3, spec, laptopData)}
+                </tr>`;
+            }
+
+            document.getElementById('compareBody').innerHTML = html;
+        }
+
+        function generateSpecCell(laptopKey, spec, laptopData) {
+            if (!laptopKey) {
+                return '<td>-</td>';
+            }
+
+            const data = laptopData[laptopKey][spec];
+            const barClass = data.value >= 80 ? 'bar-excellent' : data.value >= 50 ? 'bar-good' : 'bar-moderate';
+
+            return `
+                <td>
+                    <strong>${data.text}</strong>
+                    <div class="compare-bar">
+                        <div class="compare-bar-fill ${barClass}" style="width: ${data.value}%"></div>
+                    </div>
+                </td>
+            `;
+        }
+
+        // ===== SCROLL ANIMATIONS =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    entry.target.style.animationDelay = `${Math.random() * 0.3}s`;
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.spec-card, .system-diagram, .section-header').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Initialize
+        updateFinderUI();
+    </script>
+</body>
+</html>
